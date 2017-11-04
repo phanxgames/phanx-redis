@@ -1,17 +1,17 @@
 
 import * as commands from "redis-commands";
-import {MultiFix, RedisFix} from "./MultiFix";
+import {MultiMiddleLayer, RedisMiddleLayer} from "./RedisMiddleLayer";
 import {Dictionary} from "dictionaryjs";
 
 const multiCommands = ["exec_atomic","exec_transaction","exec"];
 
-export class PhanxRedis extends RedisFix {
+export class PhanxRedis extends RedisMiddleLayer {
 
     /**
      * Set to false to not throw errors, use .error to check if not null.
      * By default its true: meaning you need to wrap with try/catch.
      */
-    static throwErrors:Boolean = true;
+    public throwErrors:Boolean = true;
 
     /**
      * Contains the last operation's error or null if none.
@@ -504,7 +504,7 @@ export class PhanxRedis extends RedisFix {
         this.result = result;
 
         if (err) {
-            if (PhanxRedis.throwErrors)
+            if (this.throwErrors)
                 reject(err);
             else
                 resolve(null);
@@ -514,7 +514,7 @@ export class PhanxRedis extends RedisFix {
 
 }
 
-class PhanxRedisMulti extends MultiFix {
+class PhanxRedisMulti extends MultiMiddleLayer {
 
     private parent:PhanxRedis;
 
@@ -606,7 +606,7 @@ class PhanxRedisMulti extends MultiFix {
         this.parent.result = result;
 
         if (err) {
-            if (PhanxRedis.throwErrors)
+            if (this.parent.throwErrors)
                 reject(err);
             else
                 resolve(null);

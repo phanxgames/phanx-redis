@@ -1,12 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const commands = require("redis-commands");
-const MultiFix_1 = require("./MultiFix");
+const RedisMiddleLayer_1 = require("./RedisMiddleLayer");
 const dictionaryjs_1 = require("dictionaryjs");
 const multiCommands = ["exec_atomic", "exec_transaction", "exec"];
-class PhanxRedis extends MultiFix_1.RedisFix {
+class PhanxRedis extends RedisMiddleLayer_1.RedisMiddleLayer {
     constructor(config = null) {
         super(config);
+        /**
+         * Set to false to not throw errors, use .error to check if not null.
+         * By default its true: meaning you need to wrap with try/catch.
+         */
+        this.throwErrors = true;
         //let client = redis.createClient(config);
         Object.defineProperty(this, "__private__", {
             value: {},
@@ -373,7 +378,7 @@ class PhanxRedis extends MultiFix_1.RedisFix {
         this.error = err;
         this.result = result;
         if (err) {
-            if (PhanxRedis.throwErrors)
+            if (this.throwErrors)
                 reject(err);
             else
                 resolve(null);
@@ -382,13 +387,8 @@ class PhanxRedis extends MultiFix_1.RedisFix {
             resolve(result);
     }
 }
-/**
- * Set to false to not throw errors, use .error to check if not null.
- * By default its true: meaning you need to wrap with try/catch.
- */
-PhanxRedis.throwErrors = true;
 exports.PhanxRedis = PhanxRedis;
-class PhanxRedisMulti extends MultiFix_1.MultiFix {
+class PhanxRedisMulti extends RedisMiddleLayer_1.MultiMiddleLayer {
     constructor(parent, args) {
         super(parent, args);
         this.parent = parent;
@@ -442,7 +442,7 @@ class PhanxRedisMulti extends MultiFix_1.MultiFix {
         this.parent.error = err;
         this.parent.result = result;
         if (err) {
-            if (PhanxRedis.throwErrors)
+            if (this.parent.throwErrors)
                 reject(err);
             else
                 resolve(null);

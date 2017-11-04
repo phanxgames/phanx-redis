@@ -1,7 +1,7 @@
 {
   "name": "phanx-redis",
-  "version": "0.0.1",
-  "description": "Redis.",
+  "version": "0.1.0",
+  "description": "Redis wrapper adding promise and typescript support.",
   "main": "PhanxRedis.js",
   "author": "Henry Price <phanxgames@gmail.com>",
   "dependencies": {
@@ -23,6 +23,8 @@
     "redis",
     "es6",
     "async",
-    "database"
+    "database",
+    "promises",
+    "typescript"
   ]
 }

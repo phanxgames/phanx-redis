@@ -3,14 +3,14 @@ const RedisClient = require("redis").RedisClient;
 
 /** Fixes incomplete type definition in @types/redis for Multi class **/
 
-class MultiFix extends Multi {
+class MultiMiddleLayer extends Multi {
     constructor(client,args) {
         super(client,args);
     }
 }
-exports.MultiFix = MultiFix;
+exports.MultiMiddleLayer = MultiMiddleLayer;
 
-class RedisFix extends RedisClient {
+class RedisMiddleLayer extends RedisClient {
     constructor(config) {
         super(config);
     }
@@ -20,4 +20,4 @@ class RedisFix extends RedisClient {
     }
 
 }
-exports.RedisFix = RedisFix;
+exports.RedisMiddleLayer = RedisMiddleLayer;

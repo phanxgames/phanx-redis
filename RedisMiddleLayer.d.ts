@@ -2,12 +2,12 @@
 
 import {RedisClient} from "redis";
 
-export const MultiFix: {
+export const MultiMiddleLayer: {
     new (client:any,args): any;
 };
-export const RedisFix: {
-    new (config:any):RedisFix;
+export const RedisMiddleLayer: {
+    new (config:any):RedisMiddleLayer;
 };
-export interface RedisFix extends RedisClient{
+export interface RedisMiddleLayer extends RedisClient{
     pxscan(...rest):any;
 }
