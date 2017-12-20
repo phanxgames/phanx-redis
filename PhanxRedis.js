@@ -127,7 +127,7 @@ class PhanxRedis extends RedisMiddleLayer_1.RedisMiddleLayer {
      * @param {string} search - key search
      * @param {Function} cbIterator - (optional) - cb(key,data,cbNext)
      * @param {Function} cbFinal - (optional) - cb(err)
-     * @returns {Promise<any>}
+     * @returns {Promise<Dictionary<any,any>>}
      */
     getSearch(search, cbIterator = null, cbFinal = null) {
         let self = this;

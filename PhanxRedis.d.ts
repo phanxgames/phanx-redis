@@ -1,10 +1,11 @@
 import { RedisMiddleLayer } from "./RedisMiddleLayer";
+import { Dictionary } from "dictionaryjs";
 export declare class PhanxRedis extends RedisMiddleLayer {
     /**
      * Set to false to not throw errors, use .error to check if not null.
      * By default its true: meaning you need to wrap with try/catch.
      */
-    throwErrors: Boolean;
+    throwErrors: boolean;
     /**
      * Contains the last operation's error or null if none.
      */
@@ -13,7 +14,7 @@ export declare class PhanxRedis extends RedisMiddleLayer {
      * Contains the last operation's result.
      */
     result: any;
-    constructor(config?: Object);
+    constructor(config?: object);
     /**
      * Attempts to look for a key and if its null return the default
      *   parameter.
@@ -56,9 +57,9 @@ export declare class PhanxRedis extends RedisMiddleLayer {
      * @param {string} search - key search
      * @param {Function} cbIterator - (optional) - cb(key,data,cbNext)
      * @param {Function} cbFinal - (optional) - cb(err)
-     * @returns {Promise<any>}
+     * @returns {Promise<Dictionary<any,any>>}
      */
-    getSearch(search: string, cbIterator?: Function, cbFinal?: Function): Promise<any>;
+    getSearch(search: string, cbIterator?: Function, cbFinal?: Function): Promise<Dictionary<any, any>>;
     /**
      * Searches through database and deletes all keys that match the search.
      * <pre>

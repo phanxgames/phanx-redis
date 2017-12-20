@@ -3,7 +3,7 @@ import * as commands from "redis-commands";
 import {MultiMiddleLayer, RedisMiddleLayer} from "./RedisMiddleLayer";
 import {Dictionary} from "dictionaryjs";
 
-const multiCommands = ["exec_atomic","exec_transaction","exec"];
+const multiCommands:Array<string> = ["exec_atomic","exec_transaction","exec"];
 
 export class PhanxRedis extends RedisMiddleLayer {
 
@@ -11,7 +11,7 @@ export class PhanxRedis extends RedisMiddleLayer {
      * Set to false to not throw errors, use .error to check if not null.
      * By default its true: meaning you need to wrap with try/catch.
      */
-    public throwErrors:Boolean = true;
+    public throwErrors:boolean = true;
 
     /**
      * Contains the last operation's error or null if none.
@@ -24,7 +24,7 @@ export class PhanxRedis extends RedisMiddleLayer {
     public result:any;
 
 
-    constructor(config:Object=null) {
+    constructor(config:object=null) {
         super(config);
         //let client = redis.createClient(config);
 
@@ -87,7 +87,7 @@ export class PhanxRedis extends RedisMiddleLayer {
     public setJson(key:any,obj:any,cb:Function=null):Promise<any> {
 
         return new Promise((resolve,reject)=> {
-            let json = null;
+            let json:string = null;
 
             try {
                 json = JSON.stringify(obj);
@@ -168,10 +168,10 @@ export class PhanxRedis extends RedisMiddleLayer {
      * @param {string} search - key search
      * @param {Function} cbIterator - (optional) - cb(key,data,cbNext)
      * @param {Function} cbFinal - (optional) - cb(err)
-     * @returns {Promise<any>}
+     * @returns {Promise<Dictionary<any,any>>}
      */
     public getSearch(search:string,cbIterator:Function=null,
-                     cbFinal:Function=null):Promise<any>
+                     cbFinal:Function=null):Promise<Dictionary<any,any>>
     {
         let self:PhanxRedis = this;
 
@@ -181,10 +181,10 @@ export class PhanxRedis extends RedisMiddleLayer {
 
             let cursor:number = 0;
             let keyResults:Array<any> = [];
-            let results:Dictionary = null;
+            let results:Dictionary<any,any> = null;
 
             if (cbIterator==null)
-                results = new Dictionary();
+                results = new Dictionary<any,any>();
 
             let counter:number;
             let len:number;
@@ -600,7 +600,9 @@ class PhanxRedisMulti extends MultiMiddleLayer {
     }
 
 
-    private _handleCallback(resolve, reject, err, result):void {
+    private _handleCallback(resolve:Function, reject:Function,
+                            err:Error, result:any):void
+    {
 
         this.parent.error = err;
         this.parent.result = result;
