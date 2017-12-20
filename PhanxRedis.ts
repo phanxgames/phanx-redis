@@ -2,6 +2,7 @@
 import * as commands from "redis-commands";
 import {MultiMiddleLayer, RedisMiddleLayer} from "./RedisMiddleLayer";
 import {Dictionary} from "dictionaryjs";
+import {Callback} from "redis";
 
 const multiCommands:Array<string> = ["exec_atomic","exec_transaction","exec"];
 
@@ -493,9 +494,6 @@ export class PhanxRedis extends RedisMiddleLayer {
         };
 
 
-
-
-
     }
 
     private _handleCallback(resolve, reject, err, result=null):void {
@@ -511,6 +509,7 @@ export class PhanxRedis extends RedisMiddleLayer {
         } else
             resolve(result);
     }
+
 
 }
 
@@ -615,4 +614,6 @@ class PhanxRedisMulti extends MultiMiddleLayer {
         } else
             resolve(result);
     }
+
+
 }
