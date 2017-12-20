@@ -1,6 +1,6 @@
 {
   "name": "phanx-redis",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Redis wrapper adding promise and typescript support.",
   "main": "PhanxRedis.js",
   "typings": "PhanxRedis.d.ts",
