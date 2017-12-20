@@ -121,7 +121,7 @@ class PhanxRedis extends RedisMiddleLayer_1.RedisMiddleLayer {
      *   creation.
      *
      * <pre>
-     *     let result:Dictionary = await redis.getSearch("key.*");
+     *     let result:Dictionary<any,any> = await redis.getSearch("key.*");
      * </pre>
      *
      * @param {string} search - key search
