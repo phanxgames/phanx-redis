@@ -16,11 +16,11 @@ export interface RedisMiddleLayer extends Commands<any>, EventEmitter {
 
     pxscan(...rest):any;
 
-    /*
+
     //hack until @types/redis has the callback fix, pull request
     hgetall(key: string,
             cb?: Callback<{ [key: string]: string }>):any;
-    */
+
 
     connected: boolean;
     command_queue_length: number;
