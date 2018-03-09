@@ -25,8 +25,13 @@ export class PhanxRedis extends RedisMiddleLayer {
     public result:any;
 
 
+    public lastCommandFunctionRef:Function;
+    public lastCommandParameters:any;
+
+
     constructor(config:object=null) {
-        super(config);
+
+        super(PhanxRedis.setupConfig(config));
         //let client = redis.createClient(config);
 
         Object.defineProperty(this, "__private__", {
@@ -37,6 +42,59 @@ export class PhanxRedis extends RedisMiddleLayer {
 
         this.__setupMethods();
 
+        this.__setupEventListeners();
+
+    }
+
+    private __setupEventListeners():void {
+
+        /*
+        this.on("error", (err) => {
+            console.error("REDIS ERROR", err);
+        });
+
+        this.on("end", (err) => {
+
+            console.error("REDIS CONNECTION ENDED");
+            console.error(err);
+
+
+            //try to reconnect
+            //this.constructor();
+
+
+
+        });
+
+        this.on("reconnecting", (obj) => {
+           console.log("REDIS RECONNECTING...", obj);
+        });
+        */
+
+
+    }
+
+    static setupConfig(config:any):object {
+
+        if (config == null) return null;
+
+        /**
+         * The default retry strategy will always attempt to
+         *   reconnect and never stop! Heroes never die!
+         */
+        if (config.retry_strategy==null) {
+            config.retry_strategy = function (options) {
+
+                if (options.error) {
+                    console.error(options.error);
+                }
+                // reconnect after
+                return Math.min(options.attempt * 100, 3000);
+            };
+        }
+
+
+        return config;
     }
 
 
@@ -487,6 +545,9 @@ export class PhanxRedis extends RedisMiddleLayer {
                     });
                 }
 
+                this.lastCommandFunctionRef = functionRef;
+                this.lastCommandParameters = args;
+
                 functionRef.call(self,...args);
 
             });
@@ -502,6 +563,7 @@ export class PhanxRedis extends RedisMiddleLayer {
         this.result = result;
 
         if (err) {
+
             if (this.throwErrors)
                 reject(err);
             else

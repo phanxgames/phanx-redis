@@ -14,7 +14,11 @@ export declare class PhanxRedis extends RedisMiddleLayer {
      * Contains the last operation's result.
      */
     result: any;
+    lastCommandFunctionRef: Function;
+    lastCommandParameters: any;
     constructor(config?: object);
+    private __setupEventListeners();
+    static setupConfig(config: any): object;
     /**
      * Attempts to look for a key and if its null return the default
      *   parameter.

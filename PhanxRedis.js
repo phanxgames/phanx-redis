@@ -6,7 +6,7 @@ const dictionaryjs_1 = require("dictionaryjs");
 const multiCommands = ["exec_atomic", "exec_transaction", "exec"];
 class PhanxRedis extends RedisMiddleLayer_1.RedisMiddleLayer {
     constructor(config = null) {
-        super(config);
+        super(PhanxRedis.setupConfig(config));
         /**
          * Set to false to not throw errors, use .error to check if not null.
          * By default its true: meaning you need to wrap with try/catch.
@@ -18,6 +18,49 @@ class PhanxRedis extends RedisMiddleLayer_1.RedisMiddleLayer {
             enumerable: false
         });
         this.__setupMethods();
+        this.__setupEventListeners();
+    }
+    __setupEventListeners() {
+        /*
+        this.on("error", (err) => {
+            console.error("REDIS ERROR", err);
+        });
+
+        this.on("end", (err) => {
+
+            console.error("REDIS CONNECTION ENDED");
+            console.error(err);
+
+
+            //try to reconnect
+            //this.constructor();
+
+
+
+        });
+
+        this.on("reconnecting", (obj) => {
+           console.log("REDIS RECONNECTING...", obj);
+        });
+        */
+    }
+    static setupConfig(config) {
+        if (config == null)
+            return null;
+        /**
+         * The default retry strategy will always attempt to
+         *   reconnect and never stop! Heroes never die!
+         */
+        if (config.retry_strategy == null) {
+            config.retry_strategy = function (options) {
+                if (options.error) {
+                    console.error(options.error);
+                }
+                // reconnect after
+                return Math.min(options.attempt * 100, 3000);
+            };
+        }
+        return config;
     }
     /**
      * Attempts to look for a key and if its null return the default
@@ -370,6 +413,8 @@ class PhanxRedis extends RedisMiddleLayer_1.RedisMiddleLayer {
                         this._handleCallback(resolve, reject, err, result);
                     });
                 }
+                this.lastCommandFunctionRef = functionRef;
+                this.lastCommandParameters = args;
                 functionRef.call(self, ...args);
             });
         };
